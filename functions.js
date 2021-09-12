@@ -27,14 +27,14 @@ function sum() {
 }
 console.log(sum(1,2,3))
 
-// rest operator
+// rest operator (array)
 function sum2(...args) {
     return args.reduce((a, b) => a + b)
 }
 console.log(sum2(1,2,3));
 
 // pythonlike default keyword arguments are also available from ES6
-// in cases like callback functions nested in methods reference global objects (i.e. window) as 'this'
+// callback functions nested in methods reference global objects (i.e. window) as 'this'
 // arrow functions can solve this as they inherit current object as 'this'
 const demoThis = {
     name: 'demo',
