@@ -13,6 +13,7 @@ function Dog(color) {
     }
 }
 // When there are many dog objects 'move' method will be redefined for each one unnecessarily
+// Better is:
 function Dog(color) {
     this.color = color;
 }
@@ -50,7 +51,7 @@ function extend(Child, Parent) {
 function mixin(target, ...sources) {
     // returning the value for empty object as target
     // usually target is constructor prototype
-    return Object.assign(target, sources)
+    return Object.assign(target, ...sources)
 }
 
 //i.e.: mixin(Fish.prototype, canEat, canSwim)
