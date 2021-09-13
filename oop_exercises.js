@@ -42,8 +42,8 @@ function Stopwatch() {
 const sw = new Stopwatch();
 
 
-/* Two constructors for HtmlElement and HtmlSelectElement
- * HtmlSelectElement inherits HtmlElement
+/* Three constructors for HtmlElement, HtmlSelectElement, HtmlImageElement
+ * HtmlSelectElement and HtmlImageElement inherit HtmlElement
 
  * HtmlElement has:
  * - click(), an instance method
@@ -51,6 +51,10 @@ const sw = new Stopwatch();
  * 
  * HtmlSelectElement takes optional `items` array as input and has:
  * - addItem() and removeItem(), both are instance methods
+ * - render(), an instance method returning html codes for selected items
+ * 
+ * HtmlImageElement takes `src` as input and has:
+ * - render(), an instance method returning html codes for image source
  */
 
 function HtmlElement() {
@@ -63,8 +67,6 @@ HtmlElement.prototype.focus = function () {
     console.log('focused');
 }
 
-const html = new HtmlElement()
-
 function HtmlSelectElement(items=[]) {
     this.items = items
 
@@ -74,12 +76,35 @@ function HtmlSelectElement(items=[]) {
         const index = items.indexOf(item);
         items.splice(index, 1);
     }
+
+    this.render = function () {
+        return `
+        <select>
+            ${this.items.map(item => `<option>${item}</option>`).join('')}
+        </select>`;
+    }
 }
 
-// DOING THIS INSTEAD WOULD NOT INHERIT INSTANCE METHODS
-// HtmlSelectElement.prototype = Object.create(HtmlElement.prototype);
+function HtmlImageElement(src) {
+    this.src = src;
+    this.render = () => `<img src="${this.src}"></img>`;
+}
 
 HtmlSelectElement.prototype = new HtmlElement();
+HtmlImageElement.prototype = new HtmlElement();
 HtmlSelectElement.prototype.constructor = HtmlSelectElement; // not necessary, just best practice
+HtmlImageElement.prototype.constructor = HtmlImageElement;
 
-const htmlSelect = new HtmlSelectElement([1, 2, 3]);
+// INHERITING LIKE THIS INSTEAD WOULD NOT INHERIT INSTANCE METHODS
+// HtmlSelectElement.prototype = Object.create(HtmlElement.prototype);
+
+
+const html = new HtmlElement();
+const select = new HtmlSelectElement([1, 2, 3]);
+const img = new HtmlImageElement('https://thispersondoesnotexist.com/');
+
+const elements = [select, img];
+
+for (const element of elements) {
+    console.log(element.render());
+}
